@@ -3,21 +3,21 @@ from object import *
 from settings import *
 import math
 
-keys = {
-    "up": False,
-    "down": False,
-    "left": False,
-    "right": False,
-    "enter": False,
-    "space": False,
-    "f": False
+keys = {                                    # The list of keys for input
+    "up": False,                            # UP arrow key
+    "down": False,                          # DOWN arrow key
+    "left": False,                          # LEFT arrow key
+    "right": False,                         # RIGHT arrow key
+    "enter": False,                         # ENTER key
+    "space": False,                         # SPACEBAR key
+    "f": False                              # F key
 }
 
-def sign(num):
-    if num > 0:
-        return 1
-    else:
-        return -1
+def sign(num):                              # returns +1 or -1 depending on whether the number is positive or negative
+    if num > 0:                             # if 0 or greater
+        return 1                            # return 1
+    else:                                   # otherwise
+        return -1                           # return -1
 
 def limit_vector2(game_object):
     if abs(game_object.y_velocity) > PLAYER_SPEED:
@@ -58,7 +58,7 @@ def bound_screen_space(game_object):
         game_object.y = 0
         game_object.y_velocity = -game_object.y_velocity
 
-def set_input(event):
+def set_input(event):                                       # Set the keys as pressed or no pressed
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
             keys['up'] = True
@@ -90,6 +90,7 @@ def set_input(event):
 def manage_input(player,obj_list):
     if(not player.alive):
         return
+                                                            # MOVEMENT CONTROLS
     if keys['up']:
         player.y_velocity = player.y_velocity - 1
         player.angle = 90
@@ -102,6 +103,7 @@ def manage_input(player,obj_list):
     if keys['right']:
         player.x_velocity = player.x_velocity + 1
         player.angle = 0
+                                                            # COMPOUND MOVEMENT CONTROLS, MULTIPLE KEYS PRESSED
     if keys['up']:
         if keys['left']:
             player.angle = 135
@@ -112,18 +114,17 @@ def manage_input(player,obj_list):
             player.angle = 225
         if keys['right']:
             player.angle = 315
+                                                            # ATTACKS AND SPECIAL ACTIONS
     if keys['space']:
-        player.brake()
+        player.warp()                                       # trigger player special
     if keys['f']:
-        laser = p_bullet(player)
-        obj_list.append(laser)
+        player.attack(obj_list)
 
-
-
-def to_radian(angle):
+def to_radian(angle):                                       # converts degree to radian units
     return math.pi*angle/180
 
-def collide_check(object1,object2):
+def collide_check(object1,object2):                         # checks whether two objects are colliding with each other
+
     if (abs(object1.x + object1.width * 0.5 - object2.x - object2.width * 0.5)) < 0.5*(object1.width + object2.width) and \
        (abs(object1.y + object1.height * 0.5 - object2.y - object2.height * 0.5)) < 0.5 * (object1.height + object2.height):
             return True

@@ -81,6 +81,7 @@ while running:
     frames = frames + curr_frames                                          # update the number of frames elapsed
     E_timer = E_timer + curr_frames                                        # update the timer for enemy generation
 
+    player.cooldown(curr_frames)                                           # cooldown player specials
     fps_text.text = str(int(clock.get_fps()))                              # update FPS counter display
 
 

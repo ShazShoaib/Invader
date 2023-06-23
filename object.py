@@ -8,48 +8,46 @@ from helper import *
 
 class img_obj:
 
-    def __init__(self):
-        self.alive = True
-        self.type = PLAYER_TAG
-        self.img_path = PLAYER_IMG_PATH
-        self.x = SCREEN_WIDTH/2 - PLAYER_WIDTH/2
-        self.y = SCREEN_HEIGHT
-        self.width = PLAYER_WIDTH
-        self.height = PLAYER_HEIGHT
-        self.angle = 90
-        self.angle_velocity = 0
-        self.x_velocity = 0
-        self.y_velocity = 1
-        self.friction = True
-        self.speedlim = True
-        self.bound = True
+    def __init__(self):                                     # Base class for all objects, values are configured for player class
+        self.alive = True                                   # To keep track of when object is alive / destroyed
+        self.type = PLAYER_TAG                              # To keep track of which object is which
+        self.img_path = PLAYER_IMG_PATH                     # Set the image path for sprite
+        self.x = 0                                          # Set the x coordinate on screen
+        self.y = SCREEN_HEIGHT                              # Set the y coordinate on screen
+        self.width = PLAYER_WIDTH                           # Set the width of the sprite rendered
+        self.height = PLAYER_HEIGHT                         # Set the height of the sprite rendered
+        self.angle = 90                                     # Set the angle offset from the image file and rendered sprite
+        self.angle_velocity = 0                             # Set the rotational velocity of the object
+        self.x_velocity = 0                                 # Set the velocity along the x axis
+        self.y_velocity = 1                                 # Set the velocity along the y axis
+        self.friction = True                                # Object will experience friction
+        self.speedlim = True                                # Object will have a speed limit
+        self.bound = True                                   # Object will be bounded within the screen space
 
     def render(self,window):
-        window.blit(self.img, (self.x,self.y))
+        window.blit(self.img, (self.x,self.y))              # Render the sprite to the window
 
     def update(self):
 
-        self.x = self.x + self.x_velocity
-        self.y = self.y + self.y_velocity
-        self.angle = self.angle + self.angle_velocity
-        if self.friction:
-            self.x_velocity = self.x_velocity * (1-FRICTION)
-            self.y_velocity = self.y_velocity * (1-FRICTION)
-            self.angle_velocity = self.angle_velocity * (1-ANGULAR_FRICTION)
+        self.x = self.x + self.x_velocity                                       # Update x coordinate based on the velocity along x axis
+        self.y = self.y + self.y_velocity                                       # Update y coordinate based on the velocity along y axis
+        self.angle = self.angle + self.angle_velocity                           # Update the angle based on the rotational velocity
 
-        if self.speedlim:
-            helper.limit_vector(self)
+        if self.friction:                                                       # If the object is set to experience friction
+            self.x_velocity = self.x_velocity * (1-FRICTION)                    # Applying friction to x axis
+            self.y_velocity = self.y_velocity * (1-FRICTION)                    # Applying friction to y axis
+            self.angle_velocity = self.angle_velocity * (1-ANGULAR_FRICTION)    # Applying friction to the rotational velocity
 
-        if self.bound:
-            helper.bound_screen_space(self)
+        if self.speedlim:                                                       # if the object is set to experience a speed limit
+            helper.limit_vector(self)                                           # limit the speed
 
-        self.img = pygame.image.load(self.img_path)
-        self.img = pygame.transform.rotate(self.img, self.angle)
-        self.img = pygame.transform.scale(self.img, (self.width, self.height))  # Scale the image to fit the window
+        if self.bound:                                                          # if the object is set to be bound within the screenspace
+            helper.bound_screen_space(self)                                     # keep the object within the screenspace
 
-    def brake(self):
-        self.x_velocity = 0.9*self.x_velocity
-        self.y_velocity = 0.9*self.y_velocity
+        self.img = pygame.image.load(self.img_path)                             # Load the image again to minimize artifacting
+        self.img = pygame.transform.rotate(self.img, self.angle)                # Rotate the image according to its angle
+        self.img = pygame.transform.scale(self.img, (self.width, self.height))  # Scale the image according to its width and height
+
 
 class explosion(img_obj):
     def __init__(self,x,y):
@@ -63,12 +61,12 @@ class explosion(img_obj):
         self.angle = random.randint(0,360)
         self.x = x
         self.y = y
-        self.angle_velocity = EXPLOSION_ROTAION
+        self.angle_velocity = EXPLOSION_ROTATION
         self.alpha = 255
 
     def update(self):
         img_obj.update(self)
-        self.alpha = self.alpha - EXPLOSION_DETERIOATION
+        self.alpha = self.alpha - EXPLOSION_DETERIORATION
         if self.width < 1:
             self.alive = False
         self.img = pygame.image.load(self.img_path)
@@ -77,8 +75,34 @@ class explosion(img_obj):
         self.img.set_alpha(self.alpha)
 
 class player(img_obj):
+
     def __init__(self):
         img_obj.__init__(self)
+        self.warp_cooldown = WARP_COOLDOWN
+        self.attack_cooldown = ATTACK_COOLDOWN
+
+    def brake(self):                                       # To reduce the velocity of the player
+        self.x_velocity = 0.9*self.x_velocity
+        self.y_velocity = 0.9*self.y_velocity
+
+    def update(self):
+        img_obj.update(self)
+
+    def cooldown(self,cool):
+        self.warp_cooldown = self.warp_cooldown + cool
+        self.attack_cooldown = self.attack_cooldown + cool
+
+    def warp(self):
+        if self.warp_cooldown > WARP_COOLDOWN:
+            self.x = self.x + WARP_SPEED * math.cos(helper.to_radian(self.angle))
+            self.y = self.y - WARP_SPEED * math.sin(helper.to_radian(self.angle))
+            self.warp_cooldown = 0
+
+    def attack(self,obj_list):
+        if self.attack_cooldown > ATTACK_COOLDOWN:
+            laser = p_bullet(self)  # Create player bullet
+            obj_list.append(laser)  # Add player bullet to object list
+            self.attack_cooldown = 0
 
 class enemy(img_obj):
     def __init__(self):

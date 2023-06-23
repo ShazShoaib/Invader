@@ -1,6 +1,6 @@
 import pygame
-# linked to game speed
-FPS = 30
+
+FPS = 30                                                    # linked to game speed
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 
@@ -19,6 +19,9 @@ PLAYER_IMG_PATH = 'sprites/player.png'
 PLAYER_SPEED = 5
 PLAYER_HEIGHT = 30
 PLAYER_WIDTH = 30
+ATTACK_COOLDOWN = 15
+WARP_SPEED = 150
+WARP_COOLDOWN = 150
 
 BULLET_IMG_PATH = 'sprites/player_attack.png'
 BULLET_SPEED = 10
@@ -31,7 +34,7 @@ ENEMY_SPEED = 2
 
 EXPLOSION_IMG_PATH = 'sprites/explosion.png'
 EXPLOSION_SIZE = 25
-EXPLOSION_ROTAION = 3
-EXPLOSION_DETERIOATION = 3
+EXPLOSION_ROTATION = 3
+EXPLOSION_DETERIORATION = 3
 
 
