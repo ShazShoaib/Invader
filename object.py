@@ -58,14 +58,14 @@ class enemy(img_obj):
         self.type = ENEMY_TAG
         self.friction = False
         self.x = random.randint(0,SCREEN_WIDTH)
-        self.y = 10
+        self.y = -PLAYER_HEIGHT
         self.angle = 270
         self.y_velocity = ENEMY_SPEED
         self.bound = False
 
     def update(self):
         img_obj.update(self)
-        self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT)
+        self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT+PLAYER_HEIGHT,0,-5-PLAYER_HEIGHT)
 
 class bullet(img_obj):
     def __init__(self, player):

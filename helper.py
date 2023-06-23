@@ -88,6 +88,8 @@ def set_input(event):
             keys['f'] = False
 
 def manage_input(player,obj_list):
+    if(not player.alive):
+        return
     if keys['up']:
         player.y_velocity = player.y_velocity - 1
         player.angle = 90
