@@ -17,7 +17,7 @@ fps_text = txt_obj(str(FPS))                                               # The
 score = 0                                                                  # Player Score
 score_text = txt_obj('SCORE '+str(score))                                  # To Display Player Score
 score_text.y = SCREEN_HEIGHT - 50                                          # Set position screen
-player = img_obj()                                                         # Create the Player
+player = player()                                                          # Create the Player
 
 obj_list.append(background)                                                # Add background as a object to list
 obj_list.append(fps_text)                                                  # Add the FPS counter as a object to list
@@ -38,9 +38,6 @@ while running:
         obj_list.append(E)
         E_timer = 0
 
-    for game_obj in obj_list:                                              # Update all game objects
-        game_obj.update()
-
     for fiend in obj_list:                                                 # check enemy collision
         if fiend.type == ENEMY_TAG:
             for object in obj_list:
@@ -48,6 +45,7 @@ while running:
                     if collide_check(object, fiend):                       # if enemy collides with a player bullet
                         object.alive = False                               # bullet is destroyed
                         fiend.alive = False                                # enemy is destroyed
+                        obj_list.append(explosion(fiend.x,fiend.y))
                         score = score + 10                                 # score is increased
                         score_text.text = 'score ' + str(score)            # score display updated
                         break
@@ -69,6 +67,9 @@ while running:
     for i in range(len(obj_list)-1,0,-1):                                  # remove all items which are marked as destroyed
         if not obj_list[i].alive:
             del obj_list[i]
+
+    for game_obj in obj_list:                                              # Update all game objects
+        game_obj.update()
 
     window.fill((0, 0, 0))                                                 # Clear the window
 

@@ -51,6 +51,35 @@ class img_obj:
         self.x_velocity = 0.9*self.x_velocity
         self.y_velocity = 0.9*self.y_velocity
 
+class explosion(img_obj):
+    def __init__(self,x,y):
+        img_obj.__init__(self)
+        self.type = EXPLOSION_TAG
+        self.img_path = EXPLOSION_IMG_PATH
+        self.width = EXPLOSION_SIZE
+        self.height = EXPLOSION_SIZE
+        self.x_velocity = 0
+        self.y_velocity = 0
+        self.angle = random.randint(0,360)
+        self.x = x
+        self.y = y
+        self.angle_velocity = EXPLOSION_ROTAION
+        self.alpha = 255
+
+    def update(self):
+        img_obj.update(self)
+        self.alpha = self.alpha - EXPLOSION_DETERIOATION
+        if self.width < 1:
+            self.alive = False
+        self.img = pygame.image.load(self.img_path)
+        self.img = pygame.transform.rotate(self.img, self.angle)
+        self.img = pygame.transform.scale(self.img, (self.width, self.height))
+        self.img.set_alpha(self.alpha)
+
+class player(img_obj):
+    def __init__(self):
+        img_obj.__init__(self)
+
 class enemy(img_obj):
     def __init__(self):
         img_obj.__init__(self)
@@ -67,7 +96,7 @@ class enemy(img_obj):
         img_obj.update(self)
         self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT+PLAYER_HEIGHT,0,-5-PLAYER_HEIGHT)
 
-class bullet(img_obj):
+class p_bullet(img_obj):
     def __init__(self, player):
         img_obj.__init__(self)
         self.type = P_BULLET_TAG
@@ -75,9 +104,9 @@ class bullet(img_obj):
         self.friction = False
         self.speedlim = False
         self.bound = False
-        self.angle = player.angle+90
         self.x_velocity = player.x_velocity + BULLET_SPEED * math.cos(helper.to_radian(player.angle))
         self.y_velocity = player.y_velocity + BULLET_SPEED * -math.sin(helper.to_radian(player.angle))
+
         self.width = BULLET_WIDTH
         self.height = BULLET_HEIGHT
         self.x = player.x + player.width / 2 - self.width / 2 + 2 * self.x_velocity

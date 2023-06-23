@@ -102,12 +102,6 @@ def manage_input(player,obj_list):
     if keys['right']:
         player.x_velocity = player.x_velocity + 1
         player.angle = 0
-    if keys['space']:
-        player.brake()
-    if keys['f']:
-        laser = bullet(player)
-        obj_list.append(laser)
-
     if keys['up']:
         if keys['left']:
             player.angle = 135
@@ -118,6 +112,13 @@ def manage_input(player,obj_list):
             player.angle = 225
         if keys['right']:
             player.angle = 315
+    if keys['space']:
+        player.brake()
+    if keys['f']:
+        laser = p_bullet(player)
+        obj_list.append(laser)
+
+
 
 def to_radian(angle):
     return math.pi*angle/180
