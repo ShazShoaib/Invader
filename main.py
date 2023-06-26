@@ -26,6 +26,8 @@ if MENU_ENABLED:
 
         if main_menu.play_button_clicked(x, y):
             in_menu = False
+        elif main_menu.quit_button_clicked(x,y):
+            exit(0)
 
         main_menu.update()
         main_menu.render(window)
