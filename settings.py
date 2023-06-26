@@ -3,6 +3,7 @@ import pygame
 FPS = 30                                                    # linked to game speed
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
+MENU_ENABLED = False
 
 FRICTION = 0.01
 ANGULAR_FRICTION = 0.01
@@ -14,6 +15,7 @@ P_BULLET_TAG = 2
 BACKGROUND_TAG = 3
 TEXT_TAG = 4
 EXPLOSION_TAG = 5
+HIGHSCORE_TAG = 6
 
 PLAYER_IMG_PATH = 'sprites/player.png'
 PLAYER_SPEED = 5

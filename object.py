@@ -80,6 +80,7 @@ class player(img_obj):
         img_obj.__init__(self)
         self.warp_cooldown = WARP_COOLDOWN
         self.attack_cooldown = ATTACK_COOLDOWN
+        self.x = SCREEN_WIDTH/2
 
     def brake(self):                                       # To reduce the velocity of the player
         self.x_velocity = 0.9*self.x_velocity
@@ -141,6 +142,7 @@ class p_bullet(img_obj):
         img_obj.update(self)
         self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT)
 
+
 class backdrop(img_obj):
     def __init__(self):
         img_obj.__init__(self)
@@ -162,16 +164,23 @@ class txt_obj:
         self.alive = True
         self.type = TEXT_TAG
         self.text = text
-        self.text_surface = self.font.render(self.text, True, (0, 0, 0), (255, 255, 255))
+        self.color = (255, 255, 255), (0, 0, 0)
+        self.text_surface = self.font.render(self.text, True, self.color[0], self.color[1])
         self.rect = self.text_surface.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.x = 0
         self.y = 0
-        self.width = 20
-        self.height = 20
+        self.width = 25
+        self.height = 30
+
+    def clicked(self,x,y):
+        if (x > self.x and x < self.x + self.width):
+            if( y > self.y and y < self.y + self.height):
+                return True
+        return False
 
     def update(self):
-        self.text_surface = self.font.render(self.text, True, (255, 255, 255), (0, 0, 0))
+        self.text_surface = self.font.render(self.text, True, self.color[0], self.color[1])
         self.rect = self.text_surface.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.rect.x = self.x
