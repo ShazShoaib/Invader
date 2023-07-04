@@ -123,6 +123,23 @@ class enemy(img_obj):
         img_obj.update(self)
         self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT+PLAYER_HEIGHT,0,-5-PLAYER_HEIGHT)
 
+class e_bullet(img_obj):
+    def __init__(self, enemy):
+        self.type = E_BULLET_TAG
+        self.img_path = E_BULLET_IMG_PATH
+        self.friction = False
+        self.speedlim = False
+        self.bound = False
+        self.y_velocity = E_BULLET_SPEED
+        self.width = BULLET_WIDTH
+        self.height = BULLET_HEIGHT
+        self.x = enemy.x + enemy.width / 2 - self.width / 2 + 2 * self.x_velocity
+        self.y = enemy.y + enemy.height / 2 - self.height / 2 + 2 * self.y_velocity
+
+    def update(self):
+        img_obj.update(self)
+        self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT)
+
 class p_bullet(img_obj):
     def __init__(self, player):
         img_obj.__init__(self)
