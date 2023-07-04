@@ -15,8 +15,8 @@ if MENU_ENABLED:
     in_menu = True
 
     while in_menu:
-        x = -1
-        y = -1
+        x = -1                                                             # mouse click coordinate x
+        y = -1                                                             # mouse click coordinate y
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 in_menu = False
@@ -24,9 +24,9 @@ if MENU_ENABLED:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Check for left mouse button click
                 x, y = event.pos
 
-        if main_menu.play_button_clicked(x, y):
+        if main_menu.play_button_clicked(x, y):                            # check if clicked play button
             in_menu = False
-        elif main_menu.quit_button_clicked(x,y):
+        elif main_menu.quit_button_clicked(x,y):                           # check if clicked quit button
             exit(0)
 
         main_menu.update()
@@ -37,6 +37,7 @@ if MENU_ENABLED:
 obj_list = []  # Stores all game objects
 frames = 0  # Total number of frames elapsed
 E_timer = 0  # To Generate Enemies with a delay
+S_timer = 0  # To Generate Stars with a delay
 
 background = backdrop()  # The Background of the game
 fps_text = txt_obj(str(FPS))  # The FPS counter
@@ -64,6 +65,11 @@ while running:
         E = enemy()
         obj_list.append(E)
         E_timer = 0
+
+    if S_timer > STAR_DELAY:
+        star1 = star()
+        obj_list.append(star1)
+        S_timer = 0
 
     for fiend in obj_list:  # check enemy collision
         if fiend.type == ENEMY_TAG:
@@ -111,6 +117,7 @@ while running:
     curr_frames = clock.tick(FPS) / FPS  # get the current frame rate
     frames = frames + curr_frames  # update the number of frames elapsed
     E_timer = E_timer + curr_frames  # update the timer for enemy generation
+    S_timer = S_timer + curr_frames  # update the timer for star generation
 
     player.cooldown(curr_frames)  # cooldown player specials
     fps_text.text = str(int(clock.get_fps()))  # update FPS counter display
