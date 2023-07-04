@@ -44,9 +44,11 @@ class img_obj:
         if self.bound:                                                          # if the object is set to be bound within the screenspace
             helper.bound_screen_space(self)                                     # keep the object within the screenspace
 
-        self.img = pygame.image.load(self.img_path)                             # Load the image again to minimize artifacting
-        self.img = pygame.transform.rotate(self.img, self.angle)                # Rotate the image according to its angle
-        self.img = pygame.transform.scale(self.img, (self.width, self.height))  # Scale the image according to its width and height
+        scaler = 1 + (math.sqrt(2)-1)*abs(math.sin(2*helper.to_radian(self.angle)))           # A scaler to keep the scale constant after rotation
+
+        self.img = pygame.image.load(self.img_path)                                           # Load the image again to minimize artifacting
+        self.img = pygame.transform.rotate(self.img, self.angle)                              # Rotate the image according to its angle
+        self.img = pygame.transform.scale(self.img, (self.width*scaler, self.height*scaler))  # Scale the image according to its width and height
 
 
 class explosion(img_obj):
