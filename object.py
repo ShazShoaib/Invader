@@ -123,25 +123,6 @@ class enemy(img_obj):
         img_obj.update(self)
         self.alive = helper.bound_check(self,SCREEN_WIDTH,SCREEN_HEIGHT+PLAYER_HEIGHT,0,-5-PLAYER_HEIGHT)
 
-star_img = pygame.image.load(STAR_IMG_PATH)
-class star(img_obj):
-
-    def __init__(self):
-        img_obj.__init__(self)
-        self.img = STAR_IMG_PATH
-        self.type = STAR_TAG
-        self.friction = False
-        self.x = random.randint(0, SCREEN_WIDTH)
-        self.y = -PLAYER_HEIGHT
-        self.y_velocity = random.randint(2,10)
-        self.width = random.randint(1,3)
-        self.height = self.width
-        self.bound = False
-
-    def update(self):
-        img_obj.update(self)
-        self.alive = helper.bound_check(self, SCREEN_WIDTH, SCREEN_HEIGHT + PLAYER_HEIGHT, 0, -5 - PLAYER_HEIGHT)
-
 class p_bullet(img_obj):
     def __init__(self, player):
         img_obj.__init__(self)
@@ -211,3 +192,21 @@ class txt_obj:
 
     def render(self,window):
         window.blit(self.text_surface, self.rect)
+
+class star(img_obj):
+
+    def __init__(self):
+        img_obj.__init__(self)
+        self.img_path = STAR_IMG_PATH
+        self.type = STAR_TAG
+        self.friction = False
+        self.x = random.randint(0, SCREEN_WIDTH)
+        self.y = -PLAYER_HEIGHT
+        self.y_velocity = random.randint(1,25)
+        self.width = random.randint(1,2)
+        self.height = self.width
+        self.bound = False
+
+    def update(self):
+        img_obj.update(self)
+        self.alive = helper.bound_check(self, SCREEN_WIDTH, SCREEN_HEIGHT + PLAYER_HEIGHT, 0, -5 - PLAYER_HEIGHT)

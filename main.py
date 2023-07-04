@@ -65,7 +65,7 @@ while running:
         E = enemy()
         obj_list.append(E)
         E_timer = 0
-
+        print(len(obj_list))
     if S_timer > STAR_DELAY:
         star1 = star()
         obj_list.append(star1)
