@@ -60,13 +60,13 @@ def bound_screen_space(game_object):
 
 def set_input(event):                                       # Set the keys as pressed or no pressed
     if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_UP:
+        if event.key == pygame.K_UP or event.key == pygame.K_w:
             keys['up'] = True
-        elif event.key == pygame.K_DOWN:
+        elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
             keys['down'] = True
-        elif event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
             keys['left'] = True
-        elif event.key == pygame.K_RIGHT:
+        elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             keys['right'] = True
         elif event.key == pygame.K_SPACE:
             keys['space'] = True
@@ -74,13 +74,13 @@ def set_input(event):                                       # Set the keys as pr
             keys['f'] = True
 
     if event.type == pygame.KEYUP:
-        if event.key == pygame.K_UP:
+        if event.key == pygame.K_UP or event.key == pygame.K_w:
             keys['up'] = False
-        elif event.key == pygame.K_DOWN:
+        elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
             keys['down'] = False
-        elif event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
             keys['left'] = False
-        elif event.key == pygame.K_RIGHT:
+        elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             keys['right'] = False
         elif event.key == pygame.K_SPACE:
             keys['space'] = False
